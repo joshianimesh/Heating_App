@@ -1,1 +1,52 @@
 #backend of all program
+import time 
+from time import time, ctime
+from tkinter import*
+
+
+class Inputs:
+
+    def Take_inputs(self, answer):
+        i = 0
+        if answer == ('yes' or 'Yes'):
+            i=1
+        else: i=0
+        return(i)
+
+class OperatingInputs:
+    
+    def DecisionOnPassing(self, checked_input):
+        if checked_input==1:
+            i=1
+            print('decision made')
+        else: 
+            i=0
+            print('negative')
+        return(i)
+    
+class OperatingOutputs:
+
+    def PassToDevice(self, input_operator):
+        if input_operator==1:
+            heater =1 
+        else: heater=0 
+        print('heater=', heater)   
+        return(heater)
+
+def main():
+    question = Inputs()
+    K = question.Take_inputs(input('Do u want me hot, daddy?')) 
+
+    decision = OperatingInputs()
+    D = decision.DecisionOnPassing(K)
+
+    heating = OperatingOutputs()
+    heating.PassToDevice(D)
+
+
+
+if __name__=='__main__':
+    main()
+     
+
+
