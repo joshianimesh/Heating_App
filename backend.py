@@ -1,6 +1,5 @@
 #backend of all program
 import time 
-from time import time, ctime
 from tkinter import*
 import requests
 import json
@@ -45,7 +44,7 @@ def Forecast(): #returns a list = [current temperature, 'feels like', humidity]
             info_weather.append(result)
         if d == 'humidity':
             info_weather.append(response_json[d])
-    return(info_weather)
+    print(info_weather)
     
 class OperatingOutputs:
 
@@ -66,11 +65,20 @@ def OnButtonPress():
     heating = OperatingOutputs()
     heating.PassToDevice(D)
 
+
+def ProcessingTime():
+    t = time.localtime()
+    string_time = time.asctime(t)
+    only_time = string_time[11:19]
+    hour = int(string_time[11:13])
+    minutes = int(string_time[14:16])
+    seconds = int(string_time[17:19])
+    print(hour, minutes, seconds)
+
 def main():
     Forecast()
     OnButtonPress()    
-
-    
+    ProcessingTime()
    
     
 
