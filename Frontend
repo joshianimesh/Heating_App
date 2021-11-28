@@ -1,0 +1,56 @@
+import backend as bk
+import tkinter as tk
+import time
+import datetime
+from datetime import date
+import importlib
+import warnings
+warnings.filterwarnings("ignore", message = "Reloaded modules: backend")
+
+importlib.reload(bk)
+root = tk.Tk()
+
+class mainpage:
+    
+    def UI(root,self):
+        
+        var1 = tk.IntVar(root, value = 0)
+        
+        ##self.buttonactivate.pack()
+        
+        self.onButton = tk.Button(root, text = 'Activate', command = bk.Inputs.Take_input_manual(self, var1))
+        self.label_temp = tk.Label(root, text = self.forecast(), bg = 'Red', fg = 'White')
+        self.label_temp.pack()
+        
+        hour_string=tk.StringVar()
+        min_string=tk.StringVar()
+        f = ('Times', 20)
+        
+        self.min_sb = tk.Spinbox(root,from_=0,to=23,wrap=True,textvariable=hour_string,width=2,state="readonly",font=f,justify=tk.CENTER)
+        
+        self.sec_hour =tk.Spinbox(root,from_=0,to=59,wrap=True,textvariable=min_string,font=f,width=2,justify=tk.CENTERCENTER)
+        
+        a= self.min_sb.get()
+        b = self.sec_hour.get()
+        self.actionBtn =tk.Button(root,text="Set on time",padx=10,pady=10,command=bk.Inputs.ManualSetTime(a,b))
+        self.actionBtn.pack(pady=10)
+        
+        
+        
+        
+    
+                 
+    
+        def heater_status(self, k):
+        #self.status =bk.OperatingOutputs.PassToDevice(self, input_operator)
+            if bk.OperatingOutputs.PassToDevice(self, k) == 1:
+                print("Heater On")
+                return 1
+            else:
+                    print('Heater off')
+                    return 0
+    
+    
+        def forecast():
+            list1= bk.OperatingInputs.forecast()
+            return list1
