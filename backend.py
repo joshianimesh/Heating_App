@@ -4,6 +4,8 @@ from tkinter import*
 import requests
 import json
 
+from requests.models import DecodeError
+
  
 
 class Inputs:
@@ -17,12 +19,13 @@ class Inputs:
 
 
 # NEED TO WORK ON IT
-    def ManualSetTime(self, input): #function to take time within heater is on  
+    def ManualSetTime(self, hours, minutes): #function to take time within heater is on  
         try: 
-            if input >0 & input <24:
+            if (hours>0 & hours <24) & (minutes >0 & minutes < 60 ):
                 CurTime = GetCurTime()
-                
-                return((int(input)+CurTime))
+                CurTime[0]+=hours
+                CurTime[1]+=minutes
+                return((CurTime))
         except Exception: return("Please input a value 0<x<24")
   
 class OperatingInputs:
@@ -42,7 +45,8 @@ class OperatingInputs:
             cur = GetCurTime()
             time.sleep(20)
             res = 1
-        return(res)
+            self.DecisionOnPassing(res)
+        
 
 
 def Forecast(): #returns a list = [current temperature, 'feels like', humidity] TAKE THIS TO FRONTEND 
@@ -86,9 +90,20 @@ def ManualTurnOn(): # TAKE THIS TO FRONTEND FOR AN ON BUTTON
     heating = OperatingOutputs()
     heating.PassToDevice(D)
 
+
+def SpinBox(): #probably needed to make spinbox work idk
+    pass
+
 def TurnWithTimer():
-    SettedTime = Inputs()
-    SettedTime = Inputs.ManualSetTime() 
+    InputedTime = Inputs()
+    TIM = InputedTime.ManualSetTime() 
+
+    decision = OperatingInputs()
+    D2 = decision.Take_input_time(TIM)
+
+    heating2= OperatingOutputs()
+    heating2.PassToDevice(D2)
+
 
 def GetCurTime(): # TAKE THIS TO FRONTEND AS A TIME
     times=[]
