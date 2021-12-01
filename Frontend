@@ -1,3 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Nov 19 00:32:42 2021
+
+@author: Animesh Joshi
+"""
+
 import backend as bk
 import tkinter as tk
 import time
@@ -5,22 +12,25 @@ import datetime
 from datetime import date
 import importlib
 import warnings
-warnings.filterwarnings("ignore", message = "Reloaded modules: backend")
+warnings.filterwarnings("ignore", message = "Reloaded modules: backend") 
 
 importlib.reload(bk)
-root = tk.Tk()
 
 class mainpage:
     
-    def UI(root,self):
+    def __init__(self, root):
         
         var1 = tk.IntVar(root, value = 0)
         
         ##self.buttonactivate.pack()
+        self.onButton = tk.Button(root, text = 'Activate', command = var1.set(1)) #button tp
+        self.onButton.pack(side = "bottom")
+        self.onButton['command'] = bk.Inputs.Take_input_manual(self, var1)
         
-        self.onButton = tk.Button(root, text = 'Activate', command = bk.Inputs.Take_input_manual(self, var1))
-        self.label_temp = tk.Label(root, text = self.forecast(), bg = 'Red', fg = 'White')
-        self.label_temp.pack()
+        bk.Inputs.Take_input_manual(self, var1)
+        
+        self.label_temp = tk.Label(root, text = bk.Forecast(), bg = 'Red', fg = 'White', justify = tk.CENTER)
+        self.label_temp.pack(side = "left")
         
         hour_string=tk.StringVar()
         min_string=tk.StringVar()
@@ -28,7 +38,10 @@ class mainpage:
         
         self.min_sb = tk.Spinbox(root,from_=0,to=23,wrap=True,textvariable=hour_string,width=2,state="readonly",font=f,justify=tk.CENTER)
         
-        self.sec_hour =tk.Spinbox(root,from_=0,to=59,wrap=True,textvariable=min_string,font=f,width=2,justify=tk.CENTERCENTER)
+        self.sec_hour =tk.Spinbox(root,from_=0,to=59,wrap=True,textvariable=min_string,font=f,width=2,justify=tk.CENTER)
+        
+        self.min_sb.pack()
+        self.sec_hour.pack()
         
         a= self.min_sb.get()
         b = self.sec_hour.get()
@@ -36,21 +49,27 @@ class mainpage:
         self.actionBtn.pack(pady=10)
         
         
+        self.statusLabel = tk.Label(root, text = bk.OperatingOutputs.PassToDevice(self, var1) )
+        self.statusLabel.pack()
+        
+    
+                        
+
+
         
         
-    
-                 
-    
-        def heater_status(self, k):
-        #self.status =bk.OperatingOutputs.PassToDevice(self, input_operator)
-            if bk.OperatingOutputs.PassToDevice(self, k) == 1:
-                print("Heater On")
-                return 1
-            else:
-                    print('Heater off')
-                    return 0
-    
-    
-        def forecast():
-            list1= bk.OperatingInputs.forecast()
-            return list1
+            
+
+
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    a = mainpage(root)
+    root.mainloop()
+
+            
+
+            
+            
+                
+                            
